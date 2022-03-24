@@ -1,19 +1,35 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
+use Dingo\Api\Routing\Router;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+/** @var Router $api */
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function (Dingo\Api\Routing\Router $api) {
+    $api->post('/auth/login', [AuthController::class, 'login']);
+    // $api->group(
+    //     [
+    //         'middleware' => ['api.throttle', 'api.auth', 'bindings'],
+    //         'limit' => 10,
+    //         'expires' => 1
+    //     ],
+    //     function (Dingo\Api\Routing\Router $api) {
+    //         $api->post('/auth/logout', [AuthController::class, 'logout']);
+
+    //         // resource products
+    //         $api->resource("products", ProductController::class, [
+    //             "only" => ["index", "show", "store", "update", "destroy"]
+    //         ]);
+    //     }
+    // );
 });
+
+// $api->version('v2', function (Dingo\Api\Routing\Router $api) {
+//     $api->post('/auth/login', [AuthController::class, 'login']);
+//     $api->group(['middleware' => ['api.auth']], function (Dingo\Api\Routing\Router $api) {
+//         $api->post('/auth/logout', [AuthController::class, 'logout']);
+//     });
+// });
